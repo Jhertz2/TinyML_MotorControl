@@ -23,6 +23,17 @@ limitations under the License.
 
 #include "Arduino.h"
 
+#define Enable12 2  // PWM pin to L293D's EN12 (pin 1) 
+#define Driver1A 3  // To L293D's 1A (pin 2)
+#define Driver2A 4  // To L293D's 2A (pin 7)
+
+void motorCTRL(byte speed, bool D1A, bool D2A){
+
+  analogWrite(Enable12,speed);  // PWM
+  digitalWrite(Driver1A,D1A);   // Boolean
+  digitalWrite(Driver2A,D2A);   // Boolean 
+}
+
 // Toggles the built-in LED every inference, and lights a colored LED depending
 // on which word was detected.
 void RespondToCommand(tflite::ErrorReporter* error_reporter,
@@ -51,14 +62,18 @@ void RespondToCommand(tflite::ErrorReporter* error_reporter,
     TF_LITE_REPORT_ERROR(error_reporter, "Heard %s (%d) @%dms", found_command,
                          score, current_time);
     // If we hear a command, light up the appropriate LED
-    if (found_command[0] == 'y') {
+    if (found_command[0] == 'f') {
       last_command_time = current_time;
       digitalWrite(LEDG, LOW);  // Green for yes
+      motorCTRL(125,HIGH,LOW);  // one way
+      delay(1000);
     }
 
-    if (found_command[0] == 'n') {
+    if (found_command[0] == 'b') {
       last_command_time = current_time;
       digitalWrite(LEDR, LOW);  // Red for no
+      motorCTRL(125,LOW,HIGH);  // reverse
+      delay(1000);
     }
 
     if (found_command[0] == 'u') {
