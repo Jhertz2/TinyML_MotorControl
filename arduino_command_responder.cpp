@@ -46,6 +46,15 @@ void RespondToCommand(tflite::ErrorReporter* error_reporter,
     pinMode(LEDR, OUTPUT);
     pinMode(LEDG, OUTPUT);
     pinMode(LEDB, OUTPUT);
+      
+      
+    // Pins for motor contorl
+
+    pinMode(Enable12, OUTPUT);
+    pinMode(Driver1A, OUTPUT);
+    pinMode(Driver2A, OUTPUT);
+      
+      
     // Ensure the LED is off by default.
     // Note: The RGB LEDs on the Arduino Nano 33 BLE
     // Sense are on when the pin is LOW, off when HIGH.
